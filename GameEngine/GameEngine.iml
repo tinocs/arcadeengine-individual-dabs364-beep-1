@@ -9,4 +9,9 @@
     <orderEntry type="library" name="javafx-sdk" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="FacetManager">
+    <facet type="javafx" name="JavaFX">
+      <configuration />
+    </facet>
+  </component>
 </module>

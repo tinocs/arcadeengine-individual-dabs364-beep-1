@@ -3,5 +3,6 @@ package engine;
 import javafx.scene.image.ImageView;
 
 
-public class Actor {
+public class Actor extends ImageView {
+    
 }
