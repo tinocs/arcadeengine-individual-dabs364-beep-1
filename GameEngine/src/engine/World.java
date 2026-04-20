@@ -84,4 +84,7 @@ public abstract class World extends Pane {
     public boolean isStopped() {
         return !isRunning;
     }
+
+    public abstract void onDimensionsInitialized();
+
 }
