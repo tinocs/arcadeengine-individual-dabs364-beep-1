@@ -1,43 +1,58 @@
 package engine;
 
 import javafx.scene.image.ImageView;
+import java.util.ArrayList;
+import java.util.List;
 
+public abstract class Actor extends ImageView {
 
-public class Actor extends ImageView {
-    public abstract void act(long now) {
-
+    public Actor() {
     }
-    public void addedToWorld() {
 
+    public abstract void act(long now);
+
+    public void addedToWorld() {
     }
 
     public double getWidth() {
-        return getImage().getWidth();
+        return getBoundsInParent().getWidth();
     }
+
     public double getHeight() {
-        return getImage().getHeight();
+        return getBoundsInParent().getHeight();
     }
+
     public <A extends Actor> List<A> getIntersectingObjects(Class<A> cls) {
         List<A> intersectingObjects = new ArrayList<>();
-        for(A actor : getWorld().getObjects(cls)) {
-            if(actor != this && getBoundsInParent().intersects(actor.getBoundsInParent())) {
-                intersectingObjects.add(actor);
+        World world = getWorld();
+        if (world != null) {
+            for (A actor : world.getObjects(cls)) {
+                if (actor != this && getBoundsInParent().intersects(actor.getBoundsInParent())) {
+                    intersectingObjects.add(actor);
+                }
             }
         }
         return intersectingObjects;
     }
-    public <A extends Actor> getOneIntersectingObject(Class<A> cls) {
-        return getIntersectingObjects(cls).get(0);
+
+    public <A extends Actor> A getOneIntersectingObject(Class<A> cls) {
+        List<A> intersecting = getIntersectingObjects(cls);
+        if (intersecting.isEmpty()) {
+            return null;
+        }
+        return intersecting.get(0);
     }
 
     public World getWorld() {
-        return (World) getParent();
+        try {
+            return (World) getParent();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public move(double dx, double dy) {
+    public void move(double dx, double dy) {
         setX(getX() + dx);
         setY(getY() + dy);
     }
-
-
 }
