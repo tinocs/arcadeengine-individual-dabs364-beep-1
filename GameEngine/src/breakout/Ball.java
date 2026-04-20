@@ -1,0 +1,31 @@
+import engine.Actor;
+
+public class Ball extends Actor {
+    private int dx;
+    private int dy;
+
+    public Ball() {
+        setImage("ball.png");
+        dx = 5;
+        dy = 5;
+    }
+
+    @Override
+    public void act(long now) {
+        move(dx, dy);
+        //bounce (top left)
+        if(getX() <= 0) {
+            dx = -dx;
+        }
+        if(getY() <= 0) {
+            dy = -dy;
+        }
+        if(getX() + getImage().getWidth() >= getWorld().getWidth()) {
+            dx= -dx;
+        }
+        if(getY() + getImage().getHeight() >= getWorld().getHeight()) {
+            dy = -dy;
+        }
+    }
+
+}
