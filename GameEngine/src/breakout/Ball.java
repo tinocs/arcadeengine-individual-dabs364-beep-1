@@ -1,11 +1,16 @@
+package breakout;
+
 import engine.Actor;
+import javafx.scene.image.Image;
 
 public class Ball extends Actor {
     private int dx;
     private int dy;
 
+    private static final Image BALL_IMAGE = new Image(Ball.class.getResource("/breakoutresources/ball.png").toString());
+
     public Ball() {
-        setImage("ball.png");
+        setImage(BALL_IMAGE);
         dx = 5;
         dy = 5;
     }
@@ -24,6 +29,9 @@ public class Ball extends Actor {
             dx= -dx;
         }
         if(getY() + getImage().getHeight() >= getWorld().getHeight()) {
+            dy = -dy;
+        }
+        if (getOneIntersectingObject(Paddle.class) != null) {
             dy = -dy;
         }
     }
