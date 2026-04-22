@@ -28,6 +28,13 @@ public class BallWorld extends World {
         ball.setY((getPrefHeight() - ball.getHeight()) / 2);
         add(ball);
 
+        for (int i = 0; i < 5; i++) {
+            Brick brick = new Brick();
+            brick.setX((getPrefWidth() - (brick.getWidth() * 5)) / 2 + i * brick.getWidth());
+            brick.setY(80);
+            add(brick);
+        }
+
         Paddle paddle = new Paddle();
         paddle.setX((getPrefWidth() - paddle.getWidth()) / 2);
         paddle.setY(getPrefHeight() - paddle.getHeight() - 20);
