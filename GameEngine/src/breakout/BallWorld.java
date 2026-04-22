@@ -6,6 +6,8 @@ import javafx.event.EventHandler;
 
 public class BallWorld extends World {
 
+    private Score score;
+
     public BallWorld() {
         setPrefSize(800, 600);
     }
@@ -23,6 +25,11 @@ public class BallWorld extends World {
 
     @Override
     public void onDimensionsInitialized() {
+        score = new Score();
+        score.setX(20);
+        score.setY(40);
+        getChildren().add(score);
+
         Ball ball = new Ball();
         ball.setX((getPrefWidth() - ball.getWidth()) / 2);
         ball.setY((getPrefHeight() - ball.getHeight()) / 2);
@@ -48,5 +55,8 @@ public class BallWorld extends World {
         });
     }
 
+    public Score getScore() {
+        return score;
+    }
 
 }

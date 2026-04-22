@@ -18,6 +18,7 @@ public class Ball extends Actor {
     @Override
     public void act(long now) {
         move(dx, dy);
+        BallWorld world = (BallWorld) getWorld();
         //bounce (top left)
         if(getX() <= 0) {
             dx = -dx;
@@ -25,11 +26,12 @@ public class Ball extends Actor {
         if(getY() <= 0) {
             dy = -dy;
         }
-        if(getX() + getImage().getWidth() >= getWorld().getWidth()) {
+        if(getX() + getImage().getWidth() >= world.getWidth()) {
             dx= -dx;
         }
-        if(getY() + getImage().getHeight() >= getWorld().getHeight()) {
+        if(getY() + getImage().getHeight() >= world.getHeight()) {
             dy = -dy;
+            world.getScore().setScore(world.getScore().getScore() - 1000);
         }
         if (getOneIntersectingObject(Paddle.class) != null) {
             dy = -dy;
@@ -47,6 +49,7 @@ public class Ball extends Actor {
                 dy = -dy;
             }
             getWorld().remove(brick);
+            world.getScore().setScore(world.getScore().getScore() + 100);
         }
     }
 
