@@ -18,6 +18,9 @@ public abstract class World extends Pane {
         keysPressed = new ArrayList<>();
         isRunning = false;
 
+        setFocusTraversable(true);
+        requestFocus();
+
         setOnKeyPressed(event -> {
             if (!keysPressed.contains(event.getCode())) {
                 keysPressed.add(event.getCode());

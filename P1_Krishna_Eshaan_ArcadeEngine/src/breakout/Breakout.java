@@ -23,4 +23,3 @@ public class Breakout extends Application {
 		launch(args);
 	}
 }
-
