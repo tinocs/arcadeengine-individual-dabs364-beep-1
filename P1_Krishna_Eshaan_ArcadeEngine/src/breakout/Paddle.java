@@ -21,6 +21,16 @@ public class Paddle extends Actor {
 			if (getWorld().isKeyPressed(KeyCode.RIGHT)) {
 				move(5, 0);
 			}
+			handleEdges();
+		}
+	}
+
+	public void handleEdges() {
+		if(getX()< 0) {
+			setX(0);
+		}
+		if(getX() + getImage().getWidth() > getWorld().getWidth()) {
+			setX(getWorld().getWidth() - getImage().getWidth());
 		}
 	}
 

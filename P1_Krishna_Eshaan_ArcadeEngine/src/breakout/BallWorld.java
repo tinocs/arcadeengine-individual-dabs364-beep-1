@@ -51,6 +51,7 @@ public class BallWorld extends World {
             @Override
             public void handle(MouseEvent event) {
                 paddle.setX(event.getX() - paddle.getWidth() / 2);
+                paddle.handleEdges();
             }
         });
     }
