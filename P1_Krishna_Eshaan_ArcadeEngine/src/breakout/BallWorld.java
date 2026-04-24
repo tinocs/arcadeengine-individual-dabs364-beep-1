@@ -13,6 +13,7 @@ public class BallWorld extends World {
 
     private Score score;
     private int level;
+    private Score lives;
 
     public BallWorld(int level) {
         setPrefSize(800, 600);
@@ -41,10 +42,15 @@ public class BallWorld extends World {
 
     @Override
     public void onDimensionsInitialized() {
-        score = new Score();
+        score = new Score("Score: ");
         score.setX(20);
         score.setY(40);
         getChildren().add(score);
+
+        lives = new Score("Lives: ");
+        lives.setX(getWidth()-100);
+        lives.setY(40);
+        getChildren().add(lives);
 
         Ball ball = new Ball();
         ball.setX((getPrefWidth() - ball.getWidth()) / 2);
@@ -74,6 +80,10 @@ public class BallWorld extends World {
 
     public Score getScore() {
         return score;
+    }
+
+    public Score getLives() {
+        return lives;
     }
 
     public void loadFile(InputStream stream) {

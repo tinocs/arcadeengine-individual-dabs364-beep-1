@@ -31,7 +31,7 @@ public class Ball extends Actor {
         }
         if(getY() + getImage().getHeight() >= world.getHeight()) {
             dy = -dy;
-            world.getScore().setScore(world.getScore().getScore() - 1000);
+            world.getLives().setScore(world.getLives().getScore() - 1);
         }
         if (getOneIntersectingObject(Paddle.class) != null) {
             dy = -dy;
