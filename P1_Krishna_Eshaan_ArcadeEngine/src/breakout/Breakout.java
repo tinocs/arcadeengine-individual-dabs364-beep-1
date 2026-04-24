@@ -16,7 +16,7 @@ public class Breakout extends Application {
 		stage.setTitle("Breakout");
 
 		BorderPane gameRoot = new BorderPane();
-		BallWorld gameWorld = new BallWorld();
+		BallWorld gameWorld = new BallWorld(1);
 		gameRoot.setCenter(gameWorld);
 		Scene gameScene = new Scene(gameRoot);
 
