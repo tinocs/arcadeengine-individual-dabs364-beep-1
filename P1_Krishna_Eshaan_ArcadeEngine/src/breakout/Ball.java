@@ -29,21 +29,29 @@ public class Ball extends Actor {
             //bounce (top left)
             if(getX() <= 0) {
                 dx = -dx;
+                world.playBallBounce();
             }
             if(getY() <= 0) {
                 dy = -dy;
+                world.playBallBounce();
             }
             if(getX() + getImage().getWidth() >= world.getWidth()) {
                 dx= -dx;
+                world.playBallBounce();
             }
             if(getY() + getImage().getHeight() >= world.getHeight()) {
                 dy = -dy;
+                world.playLoseLife();
                 world.getLives().setScore(world.getLives().getScore() - 1);
+                if (world.getLives().getScore() <= 0) {
+                    world.playGameLost();
+                }
                 world.setPaused(true);
                 world.resetBallPosition();
             }
             if (getOneIntersectingObject(Paddle.class) != null) {
                 dy = -dy;
+                world.playBallBounce();
             }
             Brick brick = getOneIntersectingObject(Brick.class);
             if (brick != null) {
@@ -58,6 +66,7 @@ public class Ball extends Actor {
                     dy = -dy;
                 }
                 getWorld().remove(brick);
+                world.playBrickHit();
                 world.getScore().setScore(world.getScore().getScore() + 100);
             }
         }

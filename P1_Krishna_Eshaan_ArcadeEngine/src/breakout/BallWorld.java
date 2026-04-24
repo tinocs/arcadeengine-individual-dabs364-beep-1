@@ -1,6 +1,7 @@
 package breakout;
 
 import engine.World;
+import engine.Sound;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -17,9 +18,21 @@ public class BallWorld extends World {
     private Score lives;
     private boolean isPaused = true;
 
+    private Sound ballBounceSound;
+    private Sound brickHitSound;
+    private Sound loseLifeSound;
+    private Sound gameWonSound;
+    private Sound gameLostSound;
+
     public BallWorld(int level) {
         setPrefSize(800, 600);
         this.level = level;
+
+        ballBounceSound = new Sound("ballbounceresources/ball_bounce.wav");
+        brickHitSound = new Sound("ballbounceresources/brick_hit.wav");
+        loseLifeSound = new Sound("ballbounceresources/lose_life.wav");
+        gameWonSound = new Sound("ballbounceresources/game_won.wav");
+        gameLostSound = new Sound("ballbounceresources/game_lost.wav");
     }
 
     @Override
@@ -32,6 +45,11 @@ public class BallWorld extends World {
             if(getObjects(Brick.class).isEmpty()) {
                 level++;
                 if(level > 3) {
+                    gameWonSound.play();
+                    level = 1;
+                    loadFile(BallWorld.class.getResourceAsStream("/breakoutresources/level" + level + ".txt"));
+                    setPaused(true);
+                    resetBallPosition();
                 } else {
                     loadFile(BallWorld.class.getResourceAsStream("/breakoutresources/level" + level + ".txt"));
                     setPaused(true);
@@ -102,6 +120,26 @@ public class BallWorld extends World {
 
     public Score getLives() {
         return lives;
+    }
+
+    public void playBallBounce() {
+        ballBounceSound.play();
+    }
+
+    public void playBrickHit() {
+        brickHitSound.play();
+    }
+
+    public void playLoseLife() {
+        loseLifeSound.play();
+    }
+
+    public void playGameWon() {
+        gameWonSound.play();
+    }
+
+    public void playGameLost() {
+        gameLostSound.play();
     }
 
     public boolean isPaused() {
