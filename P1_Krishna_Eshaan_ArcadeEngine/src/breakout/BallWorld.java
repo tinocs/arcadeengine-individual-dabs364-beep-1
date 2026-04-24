@@ -3,6 +3,7 @@ package breakout;
 import engine.World;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ public class BallWorld extends World {
     private Score score;
     private int level;
     private Score lives;
+    private boolean isPaused = true;
 
     public BallWorld(int level) {
         setPrefSize(800, 600);
@@ -22,13 +24,19 @@ public class BallWorld extends World {
 
     @Override
     public void act(long now) {
-        if(getObjects(Brick.class).isEmpty()) {
-            level++;
-            if(level > 3) {
-                //game over, main menu
-
-            } else {
-                loadFile(BallWorld.class.getResourceAsStream("/breakoutresources/level" + level + ".txt"));
+        if (isPaused) {
+            if (isKeyPressed(KeyCode.SPACE)) {
+                setPaused(false);
+            }
+        } else {
+            if(getObjects(Brick.class).isEmpty()) {
+                level++;
+                if(level > 3) {
+                } else {
+                    loadFile(BallWorld.class.getResourceAsStream("/breakoutresources/level" + level + ".txt"));
+                    setPaused(true);
+                    resetBallPosition();
+                }
             }
         }
     }
@@ -37,6 +45,7 @@ public class BallWorld extends World {
     public void start() {
         onDimensionsInitialized();
         loadFile(BallWorld.class.getResourceAsStream("/breakoutresources/level"+level+".txt"));
+        resetBallPosition();
         super.start();
     }
 
@@ -76,6 +85,15 @@ public class BallWorld extends World {
                 paddle.handleEdges();
             }
         });
+
+        setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (isPaused) {
+                    setPaused(false);
+                }
+            }
+        });
     }
 
     public Score getScore() {
@@ -84,6 +102,22 @@ public class BallWorld extends World {
 
     public Score getLives() {
         return lives;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.isPaused = paused;
+    }
+
+    public void resetBallPosition() {
+        for (Ball ball : getObjects(Ball.class)) {
+            Paddle paddle = getObjects(Paddle.class).get(0);
+            ball.setX(paddle.getX() + paddle.getWidth() / 2 - ball.getWidth() / 2);
+            ball.setY(paddle.getY() - ball.getHeight() - 5);
+        }
     }
 
     public void loadFile(InputStream stream) {
