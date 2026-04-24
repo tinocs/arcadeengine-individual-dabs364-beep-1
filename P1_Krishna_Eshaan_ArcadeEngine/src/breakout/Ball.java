@@ -65,7 +65,7 @@ public class Ball extends Actor {
                     dx = -dx;
                     dy = -dy;
                 }
-                getWorld().remove(brick);
+                brick.destroy();
                 world.playBrickHit();
                 world.getScore().setScore(world.getScore().getScore() + 100);
             }
