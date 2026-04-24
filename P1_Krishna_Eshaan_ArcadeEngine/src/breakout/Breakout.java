@@ -11,14 +11,13 @@ import javafx.stage.Stage;
 
 public class Breakout extends Application {
 
+    public static Scene titleScene;
+    private BallWorld gameWorld;
+
 	@Override
 	public void start(Stage stage) {
+        BallWorld.mainStage = stage;
 		stage.setTitle("Breakout");
-
-		BorderPane gameRoot = new BorderPane();
-		BallWorld gameWorld = new BallWorld(1);
-		gameRoot.setCenter(gameWorld);
-		Scene gameScene = new Scene(gameRoot);
 
 		VBox titleRoot = new VBox();
 		titleRoot.setAlignment(Pos.CENTER);
@@ -28,9 +27,16 @@ public class Breakout extends Application {
 		titleLabel.setStyle("-fx-font-size: 60px; -fx-font-weight: bold;");
 		Button playButton = new Button("Play");
 		titleRoot.getChildren().addAll(titleLabel, playButton);
-		Scene titleScene = new Scene(titleRoot);
+		titleScene = new Scene(titleRoot);
 
 		playButton.setOnAction(e -> {
+			if (gameWorld != null) {
+				gameWorld.stop();
+			}
+			BorderPane gameRoot = new BorderPane();
+			gameWorld = new BallWorld(1);
+			gameRoot.setCenter(gameWorld);
+			Scene gameScene = new Scene(gameRoot);
 			stage.setScene(gameScene);
 			gameWorld.start();
 		});

@@ -18,7 +18,7 @@ public class Ball extends Actor {
     @Override
     public void act(long now) {
         BallWorld world = (BallWorld) getWorld();
-        if (world.isPaused()) {
+        if (world.isPaused() || world.isGameOver()) {
             Paddle paddle = world.getObjects(Paddle.class).get(0);
             if (paddle != null) {
                 setX(paddle.getX() + paddle.getWidth() / 2 - getWidth() / 2);
@@ -45,9 +45,11 @@ public class Ball extends Actor {
                 world.getLives().setScore(world.getLives().getScore() - 1);
                 if (world.getLives().getScore() <= 0) {
                     world.playGameLost();
+                    world.setGameOver(true, false);
+                } else {
+                    world.setPaused(true);
+                    world.resetBallPosition();
                 }
-                world.setPaused(true);
-                world.resetBallPosition();
             }
             if (getOneIntersectingObject(Paddle.class) != null) {
                 dy = -dy;
