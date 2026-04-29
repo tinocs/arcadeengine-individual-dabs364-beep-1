@@ -15,22 +15,34 @@ public class Paddle extends Actor {
 	@Override
 	public void act(long now) {
 		if (getWorld() != null) {
-			if (getWorld().isKeyPressed(KeyCode.LEFT)) {
+			BallWorld world = (BallWorld) getWorld();
+			if (world.isKeyPressed(KeyCode.LEFT)) {
 				move(-5, 0);
+				if (getX() < world.getWidth() / 2) {
+					world.scroll(-3);
+				}
 			}
-			if (getWorld().isKeyPressed(KeyCode.RIGHT)) {
+			if (world.isKeyPressed(KeyCode.RIGHT)) {
 				move(5, 0);
+				if (getX() > world.getWidth() / 2) {
+					world.scroll(3);
+				}
 			}
 			handleEdges();
 		}
 	}
 
 	public void handleEdges() {
-		if(getX()< 0) {
-			setX(0);
+		BallWorld world = (BallWorld) getWorld();
+		double bgLeft = world.getBackgroundX();
+		double bgRight = bgLeft + world.getBackgroundWidth();
+		double paddleWidth = getImage().getWidth();
+
+		if (getX() < bgLeft) {
+			setX(bgLeft);
 		}
-		if(getX() + getImage().getWidth() > getWorld().getWidth()) {
-			setX(getWorld().getWidth() - getImage().getWidth());
+		if (getX() + paddleWidth > bgRight) {
+			setX(bgRight - paddleWidth);
 		}
 	}
 

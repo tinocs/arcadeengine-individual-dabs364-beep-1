@@ -3,6 +3,8 @@ package breakout;
 import engine.World;
 import engine.Sound;
 import engine.Actor;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -32,6 +34,9 @@ public class BallWorld extends World {
     private Sound gameLostSound;
 
     public static javafx.stage.Stage mainStage;
+
+    private ImageView backgroundView;
+    private Image backgroundImage;
 
     public BallWorld(int level) {
         setPrefSize(800, 600);
@@ -109,6 +114,12 @@ public class BallWorld extends World {
     }
 
     public void initGame() {
+        backgroundImage = new Image(BallWorld.class.getResource("/breakoutresources/img.png").toString());
+        backgroundView = new ImageView(backgroundImage);
+        backgroundView.setX((getPrefWidth() - backgroundImage.getWidth()) / 2);
+        backgroundView.setY(0);
+        getChildren().add(backgroundView);
+
         score = new Score("Score: ");
         score.setX(20);
         score.setY(40);
@@ -130,6 +141,7 @@ public class BallWorld extends World {
         paddle.setY(getPrefHeight() - paddle.getHeight() - 20);
         add(paddle);
 
+        /*
         setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -137,6 +149,7 @@ public class BallWorld extends World {
                 paddle.handleEdges();
             }
         });
+        */
 
         setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -256,6 +269,29 @@ public class BallWorld extends World {
             }
         }
         sc.close();
+    }
+
+    public void scroll(double dx) {
+
+        if (backgroundView != null) {
+            double newBgX = backgroundView.getX() - dx;
+            double minBgX = getWidth() - backgroundImage.getWidth();
+            double maxBgX = 0;
+            newBgX = Math.max(minBgX, Math.min(maxBgX, newBgX));
+            backgroundView.setX(newBgX);
+        }
+
+        for (Actor actor : getObjects(Actor.class)) {
+            actor.move(-dx, 0);
+        }
+    }
+
+    public double getBackgroundX() {
+        return backgroundView != null ? backgroundView.getX() : 0;
+    }
+
+    public double getBackgroundWidth() {
+        return backgroundImage != null ? backgroundImage.getWidth() : getWidth();
     }
 
 }
